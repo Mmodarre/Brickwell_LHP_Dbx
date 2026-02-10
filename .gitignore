@@ -16,6 +16,7 @@ env/
 *.swp
 *.swo
 *~
+.claude/
 
 # OS
 .DS_Store
@@ -33,6 +34,7 @@ Thumbs.db
 .pytest_cache/
 .coverage
 htmlcov/
+docs/
 
 # Databricks
 .databricks/
@@ -41,3 +43,8 @@ htmlcov/
 *.db
 *.sqlite
 databricks.yml
+typings/__builtins__.pyi
+.mcp.json
+.gitignore
+.lhp_state.json
+generated/
