@@ -1,0 +1,524 @@
+resources:
+  pipelines:
+    brickwell_lfc_pgsql_ingestion_gw:
+      name: brickwell_lfc_pgsql_ingestion_gw
+      gateway_definition:
+        connection_name: brickwell_private_ip
+        gateway_storage_catalog: brickwell_health
+        gateway_storage_schema: ingestion_schema
+        source_type: POSTGRESQL
+      schema: ingestion_schema
+      continuous: true
+      catalog: brickwell_health
+
+    brickwell_lfc_pgsql_ingestion:
+      name: brickwell_lfc_pgsql_ingestion
+      ingestion_definition:
+        ingestion_gateway_id: ${resources.pipelines.brickwell_lfc_pgsql_ingestion_gw.id}
+        objects:
+          - table:
+              source_catalog: brickwell_health
+              source_schema: regulatory
+              source_table: age_based_discount
+              destination_catalog: brickwell_health
+              destination_schema: regulatory_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          # - table:
+          #     source_catalog: brickwell_health
+          #     source_schema: claims
+          #     source_table: ambulance_claim
+          #     destination_catalog: brickwell_health
+          #     destination_schema: claims_ingestion_schema
+          #     table_configuration:
+          #       scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: policy
+              source_table: application
+              destination_catalog: brickwell_health
+              destination_schema: policy_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: policy
+              source_table: application_member
+              destination_catalog: brickwell_health
+              destination_schema: policy_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: billing
+              source_table: arrears
+              destination_catalog: brickwell_health
+              destination_schema: billing_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: regulatory
+              source_table: bank_account
+              destination_catalog: brickwell_health
+              destination_schema: regulatory_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          # - table:
+          #     source_catalog: brickwell_health
+          #     source_schema: claims
+          #     source_table: benefit_usage
+          #     destination_catalog: brickwell_health
+          #     destination_schema: claims_ingestion_schema
+          #     table_configuration:
+          #       scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: communication
+              source_table: campaign
+              destination_catalog: brickwell_health
+              destination_schema: communication_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: communication
+              source_table: campaign_response
+              destination_catalog: brickwell_health
+              destination_schema: communication_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_1
+          # - table:
+          #     source_catalog: brickwell_health
+          #     source_schema: claims
+          #     source_table: claim
+          #     destination_catalog: brickwell_health
+          #     destination_schema: claims_ingestion_schema
+          #     table_configuration:
+          #       scd_type: SCD_TYPE_2
+          # - table:
+          #     source_catalog: brickwell_health
+          #     source_schema: claims
+          #     source_table: claim_assessment
+          #     destination_catalog: brickwell_health
+          #     destination_schema: claims_ingestion_schema
+          #     table_configuration:
+          #       scd_type: SCD_TYPE_2
+          # - table:
+          #     source_catalog: brickwell_health
+          #     source_schema: claims
+          #     source_table: claim_line
+          #     destination_catalog: brickwell_health
+          #     destination_schema: claims_ingestion_schema
+          #     table_configuration:
+          #       scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: communication
+              source_table: communication
+              destination_catalog: brickwell_health
+              destination_schema: communication_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: communication
+              source_table: communication_preference
+              destination_catalog: brickwell_health
+              destination_schema: communication_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: crm
+              source_table: complaint
+              destination_catalog: brickwell_health
+              destination_schema: crm_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: policy
+              source_table: coverage
+              destination_catalog: brickwell_health
+              destination_schema: policy_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: survey
+              source_table: csat_survey
+              destination_catalog: brickwell_health
+              destination_schema: survey_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: digital
+              source_table: digital_event
+              destination_catalog: brickwell_health
+              destination_schema: digital_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: billing
+              source_table: direct_debit_mandate
+              destination_catalog: brickwell_health
+              destination_schema: billing_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: billing
+              source_table: direct_debit_result
+              destination_catalog: brickwell_health
+              destination_schema: billing_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          # - table:
+          #     source_catalog: brickwell_health
+          #     source_schema: claims
+          #     source_table: extras_claim
+          #     destination_catalog: brickwell_health
+          #     destination_schema: claims_ingestion_schema
+          #     table_configuration:
+          #       scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: policy
+              source_table: health_declaration
+              destination_catalog: brickwell_health
+              destination_schema: policy_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          # - table:
+          #     source_catalog: brickwell_health
+          #     source_schema: claims
+          #     source_table: hospital_admission
+          #     destination_catalog: brickwell_health
+          #     destination_schema: claims_ingestion_schema
+          #     table_configuration:
+          #       scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: crm
+              source_table: interaction
+              destination_catalog: brickwell_health
+              destination_schema: crm_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: billing
+              source_table: invoice
+              destination_catalog: brickwell_health
+              destination_schema: billing_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: regulatory
+              source_table: lhc_loading
+              destination_catalog: brickwell_health
+              destination_schema: regulatory_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          # - table:
+          #     source_catalog: brickwell_health
+          #     source_schema: claims
+          #     source_table: medical_service
+          #     destination_catalog: brickwell_health
+          #     destination_schema: claims_ingestion_schema
+          #     table_configuration:
+          #       scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: policy
+              source_table: member
+              destination_catalog: brickwell_health
+              destination_schema: policy_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: policy
+              source_table: member_update
+              destination_catalog: brickwell_health
+              destination_schema: policy_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: survey
+              source_table: nps_survey
+              destination_catalog: brickwell_health
+              destination_schema: survey_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: billing
+              source_table: payment
+              destination_catalog: brickwell_health
+              destination_schema: billing_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: regulatory
+              source_table: phi_rebate_entitlement
+              destination_catalog: brickwell_health
+              destination_schema: regulatory_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: policy
+              source_table: policy
+              destination_catalog: brickwell_health
+              destination_schema: policy_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: policy
+              source_table: policy_member
+              destination_catalog: brickwell_health
+              destination_schema: policy_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: billing
+              source_table: premium_discount
+              destination_catalog: brickwell_health
+              destination_schema: billing_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          # - table:
+          #     source_catalog: brickwell_health
+          #     source_schema: claims
+          #     source_table: prosthesis_claim
+          #     destination_catalog: brickwell_health
+          #     destination_schema: claims_ingestion_schema
+          #     table_configuration:
+          #       scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: billing
+              source_table: refund
+              destination_catalog: brickwell_health
+              destination_schema: billing_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: crm
+              source_table: service_case
+              destination_catalog: brickwell_health
+              destination_schema: crm_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: regulatory
+              source_table: suspension
+              destination_catalog: brickwell_health
+              destination_schema: regulatory_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: regulatory
+              source_table: upgrade_request
+              destination_catalog: brickwell_health
+              destination_schema: regulatory_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: policy
+              source_table: waiting_period
+              destination_catalog: brickwell_health
+              destination_schema: policy_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: digital
+              source_table: web_session
+              destination_catalog: brickwell_health
+              destination_schema: digital_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: benefit_category
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: campaign_type
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: case_type
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: claim_rejection_reason
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: clinical_category
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: communication_template
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: complaint_category
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: excess_option
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: extras_item_code
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: hospital
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: interaction_outcome
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: interaction_type
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: mbs_item
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: product
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: product_tier
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: prosthesis_list_item
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: provider
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: provider_location
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: state_territory
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+          - table:
+              source_catalog: brickwell_health
+              source_schema: reference
+              source_table: survey_type
+              destination_catalog: brickwell_health
+              destination_schema: reference_ingestion_schema
+              table_configuration:
+                scd_type: SCD_TYPE_2
+        source_type: POSTGRESQL
+        source_configurations:
+          - catalog:
+              source_catalog: brickwell_health
+              postgres:
+                slot_config:
+                  slot_name: lakeflow_slot
+                  publication_name: lakeflow_pub
+      schema: _meta
+      catalog: brickwell_health
