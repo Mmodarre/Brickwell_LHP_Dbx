@@ -1,8 +1,8 @@
 # Billing Arrears table - SCD Type 2 with UUID conversion
 pipeline: billing_bronze
-flowgroup: billing_arrears_TMPL0014
+flowgroup: billing_arrears_TMPL001
 
-use_template: TMPL001_delta_scd2
+use_template: TMPL001_delta_scd2r
 
 template_parameters:
   source_table: "brickwell_health.billing_ingestion_schema.arrears"
