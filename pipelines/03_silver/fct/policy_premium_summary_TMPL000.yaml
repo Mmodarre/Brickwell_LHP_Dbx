@@ -1,0 +1,116 @@
+# Policy Premium Summary - Materialized View
+# Joins policy, member, coverage, invoice, and payment for finance reporting
+
+pipeline: policy_silver
+flowgroup: policy_premium_summary
+
+actions:
+  - name: load_policy
+    type: load
+    operational_metadata: ["_processing_timestamp"]
+    readMode: snapshot
+    source:
+      type: delta
+      database: "{catalog}.{bronze_schema}"
+      table: policy
+    target: v_policy_bronze
+    description: "Load policy table from bronze"
+
+  - name: load_member
+    type: load
+    operational_metadata: ["_processing_timestamp"]
+    readMode: snapshot
+    source:
+      type: delta
+      database: "{catalog}.{bronze_schema}"
+      table: member
+    target: v_member_bronze
+    description: "Load member table from bronze"
+
+  - name: load_coverage
+    type: load
+    operational_metadata: ["_processing_timestamp"]
+    readMode: snapshot
+    source:
+      type: delta
+      database: "{catalog}.{bronze_schema}"
+      table: coverage
+    target: v_coverage_bronze
+    description: "Load coverage table from bronze"
+
+  - name: load_invoice
+    type: load
+    operational_metadata: ["_processing_timestamp"]
+    readMode: snapshot
+    source:
+      type: delta
+      database: "{catalog}.{bronze_schema}"
+      table: invoice
+    target: v_invoice_bronze
+    description: "Load invoice table from bronze"
+
+  - name: load_payment
+    type: load
+    operational_metadata: ["_processing_timestamp"]
+    readMode: snapshot
+    source:
+      type: delta
+      database: "{catalog}.{bronze_schema}"
+      table: payment
+    target: v_payment_bronze
+    description: "Load payment table from bronze"
+
+  - name: transform_premium_summary
+    type: transform
+    transform_type: sql
+    source:
+      - v_policy_bronze
+      - v_member_bronze
+      - v_coverage_bronze
+      - v_invoice_bronze
+      - v_payment_bronze
+    sql: |
+      SELECT
+        p.policy_id,
+        p.policy_number,
+        p.policy_status AS status,
+        p.effective_date,
+        p.termination_date,
+        m.member_id,
+        m.member_number,
+        m.first_name,
+        m.last_name,
+        m.date_of_birth,
+        m.state AS member_state,
+        c.coverage_id,
+        c.coverage_type,
+        c.coverage_amount,
+        c.coverage_start_date,
+        c.coverage_end_date,
+        i.invoice_id,
+        i.invoice_number,
+        i.invoice_date,
+        i.invoice_amount,
+        i.due_date,
+        i.invoice_status,
+        pay.payment_id,
+        pay.payment_date,
+        pay.payment_amount,
+        pay.payment_status AS payment_status,
+        pay.payment_method,
+        CURRENT_TIMESTAMP() AS _processing_timestamp
+      FROM v_policy_bronze p
+      LEFT JOIN v_member_bronze m ON p.policy_id = m.policy_id
+      LEFT JOIN v_coverage_bronze c ON p.policy_id = c.policy_id
+      LEFT JOIN v_invoice_bronze i ON p.policy_id = i.policy_id
+      LEFT JOIN v_payment_bronze pay ON i.invoice_id = pay.invoice_id
+    target: v_premium_summary
+    description: "Join policy, member, coverage, invoice, and payment"
+
+  - name: write_premium_summary
+    type: write
+    source: v_premium_summary
+    write_target:
+      type: materialized_view
+      database: "{catalog}.{silver_schema}"
+      table: "policy_premium_summary"
